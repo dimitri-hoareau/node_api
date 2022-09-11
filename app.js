@@ -1,9 +1,16 @@
 const express = require('express')
+const morgan = require('morgan')
+const favicon = require('serve-favicon')
 const {success} = require('./helper.js')
 let pokemons = require('./mock-pokemons')
 
 const app = express()
 const port  = 3000
+
+app
+    .use(favicon(__dirname + '/favicon.ico'))
+    .use(morgan('dev'))
+
 app.get('/', (req, res) => res.send('Hello, express'))
 
 app.get('/api/pokemons/:id', (req, res) => {
@@ -17,9 +24,5 @@ app.get('/api/pokemons', (req, res) => {
     const message = `il y a ${pokemons.length} pokemons !`
     res.json(success(message, pokemons))
 })
-
-// app.get('/api/pokemons', (req, res) => {
-//     res.send(`il y a ${pokemons.lengh} pokemons !`)
-// })
 
 app.listen(port, () => console.log(`application démarrée sur le port : ${port}`))
